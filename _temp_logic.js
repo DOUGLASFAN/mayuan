@@ -1,0 +1,3 @@
+<script>
+
+// ... (data section omitted)

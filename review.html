@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>马克思主义原理 · 简答题复习</title>
+<style>
+/* ═══════════════════════════════════════════
+   Design System — Swiss Minimalist
+   Palette: warm stone + single accent
+   ═══════════════════════════════════════════ */
+:root {
+    --bg:             #fafaf7;
+    --surface:        #ffffff;
+    --surface-hover:  #f5f4f0;
+    --surface-active: #f0eeea;
+    --text:           #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-tertiary:  #aeaeb2;
+    --border:         #e8e5e0;
+    --border-light:   #f0ede8;
+    --accent:         #7d5a3c;
+    --accent-soft:    #f5f1ec;
+    --accent-hover:   #5e3d26;
+    --good:           #4a7c4f;
+    --good-soft:      #eef4ef;
+    --warn:           #b87a3a;
+    --warn-soft:      #faf5ef;
+    --bad:            #b8433a;
+    --bad-soft:       #faf0ef;
+    --info:           #4a6480;
+    --info-soft:      #eef2f6;
+    --shadow-sm:      0 1px 2px rgba(0,0,0,.04);
+    --shadow-md:      0 2px 8px rgba(0,0,0,.06);
+    --shadow-lg:      0 4px 16px rgba(0,0,0,.07);
+
+    --radius-sm:      6px;
+    --radius:         10px;
+    --radius-lg:      14px;
+
+    --font-sans:      -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-serif:      'Iowan Old Style', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', Georgia, serif;
+
+    --space-xs:       4px;
+    --space-sm:       8px;
+    --space-md:       16px;
+    --space-lg:       24px;
+    --space-xl:       32px;
+    --space-2xl:      48px;
+
+    --transition:     0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+    --bg:             #1c1c1e;
+    --surface:        #262628;
+    --surface-hover:  #2c2c2e;
+    --surface-active: #333335;
+    --text:           #e4e4e5;
+    --text-secondary: #98989d;
+    --text-tertiary:  #636366;
+    --border:         #38383a;
+    --border-light:   #2e2e30;
+    --accent:         #c9976b;
+    --accent-soft:    #2d2620;
+    --accent-hover:   #d4a87f;
+    --good:           #6aaa6f;
+    --good-soft:      #1a2a1c;
+    --warn:           #d4a04a;
+    --warn-soft:      #2a2218;
+    --bad:            #cc5a52;
+    --bad-soft:       #2a1c1a;
+    --info:           #6a8aaa;
+    --info-soft:      #1a222a;
+    --shadow-sm:      0 1px 2px rgba(0,0,0,.15);
+    --shadow-md:      0 2px 8px rgba(0,0,0,.25);
+    --shadow-lg:      0 4px 16px rgba(0,0,0,.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+/* ═══════════ Sidebar ═══════════ */
+.sidebar {
+    width: 290px; min-width: 290px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow: hidden; z-index: 10;
+}
+
+.sidebar-header {
+    padding: var(--space-lg) var(--space-lg) var(--space-md);
+}
+.sidebar-header h1 {
+    font-family: var(--font-serif);
+    font-size: 18px; font-weight: 600;
+    letter-spacing: 1px; color: var(--text);
+}
+.sidebar-header .subtitle {
+    font-size: 11px; color: var(--text-tertiary);
+    margin-top: 2px; letter-spacing: .3px;
+}
+
+/* Stats */
+.stats-row {
+    display: flex; gap: 2px;
+    padding: 0 var(--space-md) var(--space-md);
+}
+.stat-cell {
+    flex: 1; text-align: center;
+    padding: var(--space-sm) var(--space-xs);
+    background: var(--bg); border-radius: var(--radius-sm);
+}
+.stat-cell .val {
+    font-size: 22px; font-weight: 600;
+    color: var(--text); font-family: var(--font-serif);
+    line-height: 1.1;
+}
+.stat-cell .lbl {
+    font-size: 10px; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: .8px;
+    margin-top: 1px;
+}
+
+/* Section dividers */
+.sidebar-section {
+    padding: var(--space-sm) var(--space-lg);
+}
+.sidebar-section-label {
+    font-size: 9px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--text-tertiary); margin-bottom: var(--space-sm);
+}
+
+/* Category filters */
+.cat-filters {
+    padding: 0 var(--space-md) var(--space-sm);
+    display: flex; flex-wrap: wrap; gap: 4px;
+}
+.cat-chip {
+    padding: 4px 10px; font-size: 11px;
+    border-radius: 20px; cursor: pointer;
+    border: 1px solid var(--border-light);
+    background: transparent; color: var(--text-secondary);
+    transition: var(--transition); user-select: none;
+    letter-spacing: .2px;
+}
+.cat-chip:hover { background: var(--surface-hover); border-color: var(--border); color: var(--text); }
+.cat-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.cat-chip .cnt { font-size: 9px; opacity: .65; margin-left: 3px; }
+.cat-chip.active .cnt { opacity: .85; }
+
+/* Mode toggles */
+.mode-toggles {
+    display: flex; gap: 2px;
+    padding: 0 var(--space-md) var(--space-sm);
+}
+.mode-btn {
+    flex: 1; padding: 6px 4px; font-size: 10px;
+    border: 1px solid var(--border-light); border-radius: var(--radius-sm);
+    cursor: pointer; background: transparent;
+    color: var(--text-secondary); transition: var(--transition);
+    text-align: center; letter-spacing: .3px;
+}
+.mode-btn:hover { background: var(--surface-hover); color: var(--text); }
+.mode-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+/* Topic list */
+.topic-list { flex: 1; overflow-y: auto; padding: var(--space-xs) var(--space-sm); }
+.topic-item {
+    display: flex; align-items: center; gap: var(--space-sm);
+    padding: 7px 10px; border-radius: var(--radius-sm);
+    cursor: pointer; transition: var(--transition);
+    margin-bottom: 1px; border-left: 2px solid transparent;
+    font-size: 12px; line-height: 1.35;
+}
+.topic-item:hover { background: var(--surface-hover); }
+.topic-item.active {
+    background: var(--accent-soft);
+    border-left-color: var(--accent);
+    font-weight: 500;
+}
+.topic-item .idx {
+    font-size: 10px; color: var(--text-tertiary);
+    min-width: 18px; text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+.topic-item.active .idx { color: var(--accent); }
+.topic-item .title { flex: 1; }
+.topic-item .dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    opacity: 0; transition: opacity var(--transition);
+}
+.topic-item .dot.visible { opacity: 1; }
+.topic-item .dot.forgot { background: var(--bad); }
+.topic-item .dot.hard   { background: var(--warn); }
+.topic-item .dot.good   { background: var(--good); }
+.topic-item .dot.easy   { background: var(--info); }
+
+/* ═══════════ Main ═══════════ */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+
+/* Top bar */
+.topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px var(--space-xl);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface); flex-shrink: 0;
+}
+.topbar-breadcrumb {
+    font-size: 12px; color: var(--text-secondary);
+    letter-spacing: .2px;
+}
+.topbar-breadcrumb span { color: var(--text); font-weight: 500; }
+.topbar-actions { display: flex; gap: var(--space-xs); align-items: center; }
+.icon-btn {
+    width: 32px; height: 32px; border: 1px solid var(--border-light);
+    border-radius: 50%; cursor: pointer; background: transparent;
+    font-size: 14px; color: var(--text-secondary);
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+}
+.icon-btn:hover { background: var(--surface-hover); border-color: var(--border); color: var(--text); }
+
+/* Scroll area */
+.scroll-area {
+    flex: 1; overflow-y: auto;
+    padding: var(--space-xl);
+    display: flex; flex-direction: column; align-items: center;
+}
+
+/* ═══════════ Card ═══════════ */
+.review-card {
+    width: 100%; max-width: 720px;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-xl) var(--space-xl);
+    transition: box-shadow var(--transition);
+}
+.review-card:hover { box-shadow: var(--shadow-md); }
+
+.card-category {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--accent); margin-bottom: var(--space-sm);
+}
+.card-title {
+    font-family: var(--font-serif);
+    font-size: 22px; font-weight: 600;
+    line-height: 1.4; color: var(--text);
+    margin-bottom: var(--space-md);
+}
+.card-hint {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-bottom: var(--space-lg);
+}
+.card-hint .kp-chip {
+    font-size: 11px; padding: 3px 10px;
+    background: var(--bg); border-radius: 14px;
+    color: var(--text-secondary); letter-spacing: .2px;
+    border: 1px solid var(--border-light);
+}
+
+/* Answer */
+.answer-content {
+    padding: var(--space-lg);
+    background: var(--bg);
+    border-radius: var(--radius);
+    border-left: 2px solid var(--accent);
+    margin-bottom: var(--space-lg);
+    display: none; line-height: 1.9;
+}
+.answer-content.visible {
+    display: block;
+    animation: fadeIn .35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.answer-content h3 {
+    font-size: 13px; font-weight: 600;
+    color: var(--accent); margin: var(--space-md) 0 var(--space-xs);
+    padding-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--border-light);
+    letter-spacing: .3px;
+}
+.answer-content h3:first-child { margin-top: 0; }
+.answer-content .point {
+    padding: 2px 0 2px 10px; font-size: 14px;
+    border-left: 2px solid transparent; margin: 2px 0;
+}
+.answer-content .point.hl {
+    background: var(--accent-soft);
+    border-left-color: var(--accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.answer-content .kw {
+    color: var(--accent); font-weight: 600;
+}
+
+/* Reveal */
+.reveal-area { text-align: center; padding: var(--space-sm) 0; }
+.reveal-btn {
+    padding: 12px 40px; font-size: 14px;
+    background: var(--text); color: var(--bg);
+    border: none; border-radius: 24px; cursor: pointer;
+    font-family: var(--font-sans); font-weight: 500;
+    letter-spacing: .5px;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+.reveal-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+.reveal-btn:active { transform: translateY(0); }
+
+/* Rating */
+.rating-section { display: none; margin-top: var(--space-xs); }
+.rating-section.visible {
+    display: block;
+    animation: fadeIn .35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.rating-hint {
+    font-size: 11px; color: var(--text-tertiary);
+    margin-bottom: var(--space-md); text-align: center;
+    letter-spacing: .3px;
+}
+.rating-btns { display: flex; gap: var(--space-sm); }
+.rate-btn {
+    flex: 1; padding: 12px var(--space-sm); border-radius: var(--radius);
+    cursor: pointer; font-size: 12px; font-weight: 500;
+    text-align: center; transition: var(--transition);
+    border: 1px solid var(--border-light);
+    background: var(--surface); color: var(--text-secondary);
+    letter-spacing: .2px;
+}
+.rate-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+.rate-btn .rating-icon { font-size: 16px; display: block; margin-bottom: 4px; }
+.rate-btn.forgot:hover { border-color: var(--bad); background: var(--bad-soft); color: var(--bad); }
+.rate-btn.hard:hover   { border-color: var(--warn); background: var(--warn-soft); color: var(--warn); }
+.rate-btn.good:hover   { border-color: var(--good); background: var(--good-soft); color: var(--good); }
+.rate-btn.easy:hover   { border-color: var(--info); background: var(--info-soft); color: var(--info); }
+
+/* Rating history */
+.rating-history {
+    text-align: center; margin-top: var(--space-md);
+    font-size: 11px; color: var(--text-tertiary);
+    letter-spacing: .2px;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center; padding: var(--space-2xl) var(--space-lg);
+    color: var(--text-tertiary);
+}
+.empty-state .empty-title {
+    font-family: var(--font-serif);
+    font-size: 18px; margin-bottom: var(--space-sm);
+    color: var(--text-secondary);
+}
+.empty-state p { font-size: 13px; line-height: 1.7; }
+
+/* Toast */
+.toast {
+    position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: var(--bg);
+    padding: 8px 20px; border-radius: 20px; font-size: 12px;
+    z-index: 100; pointer-events: none; opacity: 0;
+    transition: opacity .3s; letter-spacing: .3px;
+}
+.toast.show { opacity: 1; }
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════ Responsive ═══════════ */
+@media (max-width: 768px) {
+    body { flex-direction: column; }
+    .sidebar {
+        width: 100%; min-width: 100%;
+        max-height: 45%; border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+    .main { height: 55%; }
+    .sidebar-header { padding: var(--space-md); }
+    .sidebar-header h1 { font-size: 16px; }
+    .stats-row { padding: 0 var(--space-sm) var(--space-sm); }
+    .cat-filters { padding: 0 var(--space-sm) var(--space-xs); }
+    .mode-toggles { padding: 0 var(--space-sm) var(--space-xs); }
+    .topic-list { max-height: 200px; }
+    .scroll-area { padding: var(--space-md); }
+    .review-card { padding: var(--space-lg); border-radius: var(--radius); }
+    .card-title { font-size: 18px; }
+    .rating-btns { flex-wrap: wrap; }
+    .rate-btn { flex: 1 1 45%; }
+    .topbar { padding: 8px var(--space-md); }
+}
+
+@media (max-width: 480px) {
+    .sidebar { max-height: 40%; }
+    .main { height: 60%; }
+    .scroll-area { padding: var(--space-sm); }
+    .review-card { padding: var(--space-md); }
+    .card-title { font-size: 16px; }
+    .answer-content { padding: var(--space-md); font-size: 13px; }
+    .answer-content .point { font-size: 13px; }
+    .rate-btn { flex: 1 1 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ Sidebar ═══════════ -->
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h1>马克思主义原理</h1>
+        <div class="subtitle">简答题高频考点 · 背诵复习</div>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-cell"><div class="val" id="statReviewed">0</div><div class="lbl">已复习</div></div>
+        <div class="stat-cell"><div class="val" id="statMastered">0</div><div class="lbl">已掌握</div></div>
+        <div class="stat-cell"><div class="val" id="statWeak">0</div><div class="lbl">薄弱</div></div>
+        <div class="stat-cell"><div class="val" id="statTotal">0</div><div class="lbl">总计</div></div>
+    </div>
+
+    <div class="sidebar-section"><div class="sidebar-section-label">章节</div></div>
+    <div class="cat-filters" id="catFilters"></div>
+
+    <div class="sidebar-section"><div class="sidebar-section-label">模式</div></div>
+    <div class="mode-toggles">
+        <button class="mode-btn active" data-mode="all">全部</button>
+        <button class="mode-btn" data-mode="weak">薄弱</button>
+        <button class="mode-btn" data-mode="unreviewed">未复习</button>
+        <button class="mode-btn" data-mode="random">随机</button>
+    </div>
+
+    <div class="sidebar-section"><div class="sidebar-section-label">题目列表</div></div>
+    <nav class="topic-list" id="topicList"></nav>
+</aside>
+
+<!-- ═══════════ Main ═══════════ -->
+<main class="main">
+    <div class="topbar">
+        <div class="topbar-breadcrumb">共 <span id="topbarTotal">0</span> 题 · <span id="topbarPos"></span></div>
+        <div class="topbar-actions">
+            <button class="icon-btn" id="btnPrev" title="上一题">&larr;</button>
+            <button class="icon-btn" id="btnNext" title="下一题">&rarr;</button>
+            <button class="icon-btn" id="btnTheme" title="深浅切换">&#9681;</button>
+        </div>
+    </div>
+
+    <div class="scroll-area" id="scrollArea">
+        <div class="review-card" id="reviewCard"></div>
+    </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════ Data ═══════════
+const TOPICS = [
+    {
+        id: 'c1', category: '唯物论', shortName: '唯物论',
+        topics: [
+            { id:'t1', title:'物质和意识的辩证关系', keyPoints:['物质决定意识','意识能动反作用（4点）','方法论：一切从实际出发'], answer:[
+                {h:'1. 物质决定意识'},{p:'物质第一性，意识第二性。物质是世界本原，意识是人脑对客观世界的主观映象，物质不以人的意志为转移。',hl:['物质第一性','意识第二性','主观映象']},
+                {h:'2. 意识对物质具有能动反作用'},{p:'① 意识具有<k>目的性</k>和<k>计划性</k>，人在行动前预设目标方案；',hl:['目的性','计划性']},
+                {p:'② 意识具有<k>创造性</k>，能透过现象把握本质规律；',hl:['创造性']},
+                {p:'③ 意识指导实践<k>改造客观世界</k>，这是意识能动作用最突出体现；',hl:['改造客观世界']},
+                {p:'④ 意识能<k>调控人的生理、心理活动</k>。',hl:['调控生理']},
+                {h:'3. 方法论'},{p:'一切从实际出发，实事求是；同时充分发挥主观能动性。',hl:['一切从实际出发','实事求是']}
+            ]},
+            { id:'t2', title:'客观规律性与主观能动性的辩证统一', keyPoints:['尊重客观规律是前提','发挥主观能动性是条件','二者统一于实践'], answer:[
+                {h:'1. 尊重客观规律是正确发挥主观能动性的前提'},{p:'规律是客观的，不能被创造、消灭或改造。违背客观规律必然遭到失败。',hl:['客观','不能创造消灭改造']},
+                {h:'2. 充分发挥主观能动性是认识、利用客观规律的必要条件'},{p:'规律隐藏在事物内部，只有通过主动实践和深入思考才能把握。',hl:['主动实践','深入思考']},
+                {h:'3. 二者统一于实践'},{p:'既要反对<k>唯意志论</k>（片面夸大主观能动性），又要反对<k>宿命论</k>（完全否定主观能动性）。',hl:['唯意志论','宿命论']}
+            ]},
+            { id:'t3', title:'意识的能动作用', keyPoints:['目的性和计划性','创造性','指导实践改造世界','调控生理活动'], answer:[
+                {p:'① 意识活动具有<k>目的性和计划性</k>——人在行动前预设目标、蓝图和方案。',hl:['目的性','计划性']},
+                {p:'② 意识活动具有<k>创造性</k>——能加工改造感性材料，把握事物本质、预见未来发展趋势。',hl:['创造性']},
+                {p:'③ 意识具有<k>指导实践改造客观世界</k>的作用——这是意识能动作用的<k>最突出体现</k>。',hl:['指导实践','最突出体现']},
+                {p:'④ 意识具有<k>调控人的生理、心理活动</k>的作用——意志力、情绪等影响身体状态。',hl:['调控生理心理']}
+            ]},
+            { id:'t4', title:'运动与静止的辩证关系', keyPoints:['运动是绝对的','静止是相对的','动中有静，静中有动'], answer:[
+                {h:'1. 运动是绝对的'},{p:'运动是物质的根本属性和存在方式，一切事物永远处于变化之中。',hl:['根本属性','存在方式']},
+                {h:'2. 静止是相对的'},{p:'静止是运动的特殊状态。包括两种情形：空间位置暂时不变；事物根本性质暂时不变。',hl:['特殊状态','空间位置','根本性质']},
+                {h:'3. 动中有静，静中有动'},{p:'任何事物都是绝对运动与相对静止的统一。',hl:['绝对运动','相对静止','统一']},
+                {h:'4. 反对两种错误'},{p:'反对<k>形而上学不变论</k>（只承认静止否认运动）和<k>相对主义诡辩论</k>（只承认运动否认静止）。',hl:['形而上学不变论','相对主义诡辩论']}
+            ]}
+        ]
+    },
+    {
+        id: 'c2', category: '辩证法', shortName: '辩证法',
+        topics: [
+            { id:'t5', title:'为什么对立统一规律是唯物辩证法的实质和核心', keyPoints:['揭示根本内容与内在动力','贯通其他规律的中心线索','矛盾分析法是根本方法','辩证法与形而上学根本分歧'], answer:[
+                {p:'① 对立统一规律揭示了事物普遍联系的<k>根本内容</k>和事物发展的<k>内在动力</k>。',hl:['根本内容','内在动力']},
+                {p:'② 它是贯穿唯物辩证法其他规律和范畴的<k>中心线索</k>——质量互变规律、否定之否定规律都是矛盾运动的具体表现。',hl:['中心线索']},
+                {p:'③ <k>矛盾分析法</k>是我们认识世界和改造世界的根本认识方法。',hl:['矛盾分析法','根本认识方法']},
+                {p:'④ 是否承认事物<k>内部矛盾</k>，是辩证法与形而上学的<k>根本分歧</k>所在。',hl:['内部矛盾','根本分歧']}
+            ]},
+            { id:'t6', title:'矛盾普遍性与特殊性的辩证关系', keyPoints:['普遍性：无处不在、无时不有','特殊性：各有特点','普遍性寓于特殊性之中','具体问题具体分析'], answer:[
+                {h:'1. 矛盾普遍性'},{p:'矛盾无处不在、无时不有。矛盾存在于一切事物中，贯穿每一事物发展过程的始终。',hl:['无处不在','无时不有']},
+                {h:'2. 矛盾特殊性'},{p:'不同事物的矛盾各有特点；同一事物的矛盾在不同发展阶段各有特点；矛盾的各个方面各有特点。',hl:['不同事物','不同阶段','不同方面']},
+                {h:'3. 二者辩证关系'},{p:'① 二者<k>相互联结</k>：普遍性寓于特殊性之中，通过特殊性表现出来；特殊性包含普遍性。',hl:['相互联结','寓于']},
+                {p:'② 二者在一定条件下<k>相互转化</k>。',hl:['相互转化']},
+                {h:'4. 方法论意义'},{p:'坚持<k>具体问题具体分析</k>——这是马克思主义活的灵魂。这一原理是马克思主义基本原理与中国具体实际相结合的<k>哲学依据</k>。',hl:['具体问题具体分析','活的灵魂','哲学依据']}
+            ]},
+            { id:'t7', title:'矛盾同一性和斗争性的辩证关系', keyPoints:['同一性：相互依存、贯通、转化','斗争性：相互排斥、分离','同一相对、斗争绝对','又同一又斗争推动发展'], answer:[
+                {h:'1. 矛盾同一性（统一性）'},{p:'矛盾双方<k>相互依存</k>，一方的存在以另一方的存在为前提；矛盾双方<k>相互贯通</k>，在一定条件下<k>相互转化</k>。',hl:['相互依存','相互贯通','相互转化']},
+                {h:'2. 矛盾斗争性（对立性）'},{p:'矛盾双方<k>相互排斥</k>、<k>相互分离</k>。',hl:['相互排斥','相互分离']},
+                {h:'3. 二者关系'},{p:'① 同一性是<k>相对的、有条件的</k>；斗争性是<k>绝对的、无条件的</k>。',hl:['相对的','绝对的']},
+                {p:'② 同一性为斗争提供场所和条件，斗争推动事物发生变化。'},
+                {p:'③ 矛盾双方<k>又同一又斗争</k>，由此推动事物的运动、变化和发展。',hl:['又同一又斗争']}
+            ]},
+            { id:'t8', title:'辩证否定观（扬弃）', keyPoints:['自我否定','发展的环节','联系的环节','实质是扬弃'], answer:[
+                {p:'① 否定是事物的<k>自我否定</k>——是事物内部矛盾运动的必然结果，不是外力强加的。',hl:['自我否定','内部矛盾']},
+                {p:'② 否定是事物<k>发展的环节</k>——旧事物灭亡、新事物产生的必经之路。',hl:['发展的环节']},
+                {p:'③ 否定是事物<k>联系的环节</k>——新事物保留和继承了旧事物中的合理、积极因素。',hl:['联系的环节']},
+                {p:'④ 辩证否定的实质是<k>扬弃</k>：既克服旧事物中消极、过时的内容（弃），又保留其积极、合理的因素（扬），是包含肯定的否定。',hl:['扬弃','克服消极','保留积极']},
+                {p:'⑤ 反对形而上学的否定观：要么全盘肯定，要么全盘否定。',hl:['全盘肯定','全盘否定']}
+            ]},
+            { id:'t9', title:'联系的特点', keyPoints:['客观性','普遍性','多样性','条件性'], answer:[
+                {p:'① <k>客观性</k>：联系是事物本身所固有的，不以人的意志为转移。',hl:['客观性','固有']},
+                {p:'② <k>普遍性</k>：事物内部各要素之间、事物与事物之间、整个世界都处于普遍联系之中，孤立的事物是不存在的。',hl:['普遍性']},
+                {p:'③ <k>多样性</k>：联系的形式多种多样——因果联系、整体与部分、偶然与必然、本质与非本质等。',hl:['多样性','因果','整体部分','偶然必然']},
+                {p:'④ <k>条件性</k>：任何联系都以一定条件为转移，条件发生变化，联系也随之改变。',hl:['条件性']}
+            ]},
+            { id:'t10', title:'发展的实质', keyPoints:['新事物产生、旧事物灭亡','新事物符合规律','前进上升运动'], answer:[
+                {p:'① 发展的实质是<k>新事物的产生和旧事物的灭亡</k>。',hl:['新事物产生','旧事物灭亡']},
+                {p:'② 新事物是<k>符合客观规律</k>、具有强大生命力和远大前途的事物；旧事物是违背客观规律、日趋灭亡的事物。',hl:['符合客观规律','远大前途']},
+                {p:'③ 发展是<k>前进的、上升的</k>运动，不等同于一切变化（变化既包括前进也包括倒退）。',hl:['前进上升','不等同于一切变化']}
+            ]}
+        ]
+    },
+    {
+        id: 'c3', category: '认识论', shortName: '认识论',
+        topics: [
+            { id:'t11', title:'实践对认识的决定作用（四个决定）', keyPoints:['实践是认识的来源','实践是认识发展的动力','实践是检验真理的唯一标准','实践是认识的目的'], answer:[
+                {p:'① <k>实践是认识的来源</k>：一切认识归根到底都来源于实践。直接经验和间接经验最终都来自实践。',hl:['来源']},
+                {p:'② <k>实践是认识发展的动力</k>：实践不断提出新课题、提供新工具、锻炼和提高人的认识能力。',hl:['动力','新课题']},
+                {p:'③ <k>实践是检验认识真理性的唯一标准</k>：只有实践才能检验认识是否与客观实际相符合。',hl:['唯一标准']},
+                {p:'④ <k>实践是认识的目的</k>：认识世界最终是为了改造世界，否则认识就没有意义。',hl:['目的','改造世界']}
+            ]},
+            { id:'t12', title:'感性认识与理性认识的辩证关系', keyPoints:['感性：初级阶段（感觉知觉表象）','理性：高级阶段（概念判断推理）','理性依赖感性','感性有待上升为理性'], answer:[
+                {h:'1. 定义区别'},{p:'<k>感性认识</k>是认识的<k>初级阶段</k>（感觉、知觉、表象），反映事物的外部现象和外部联系。',hl:['初级阶段','感觉','知觉','表象']},
+                {p:'<k>理性认识</k>是认识的<k>高级阶段</k>（概念、判断、推理），反映事物的内在本质和规律。',hl:['高级阶段','概念','判断','推理']},
+                {h:'2. 辩证关系'},{p:'① 理性认识<k>依赖于</k>感性认识——感性是理性的基础和来源，没有感性认识就没有理性认识。',hl:['依赖于']},
+                {p:'② 感性认识<k>有待于上升和发展为</k>理性认识——只有达到理性认识才能把握事物本质。',hl:['有待上升']},
+                {p:'③ 二者<k>相互渗透</k>：感性中有理性因素（人总是带着已有的理性知识去感知），理性中有感性因素。',hl:['相互渗透']},
+                {h:'3. 统一基础是实践'},{p:'反对<k>唯理论</k>（只承认理性、否认感性）和<k>经验论</k>（只承认感性、否认理性）。',hl:['唯理论','经验论']}
+            ]},
+            { id:'t13', title:'真理的绝对性和相对性的辩证关系', keyPoints:['绝对性：内容客观 + 能正确认识世界','相对性：广度有限 + 深度有限','任何真理都是绝对与相对的统一'], answer:[
+                {h:'1. 真理的绝对性（无条件性）'},{p:'① 真理的内容是<k>客观的</k>，与客观世界相符合，这一点是无条件的、绝对的。',hl:['客观的','无条件']},
+                {p:'② 人类认识按其本性来说，能够<k>正确认识无限发展的物质世界</k>，这一点也是绝对的。',hl:['正确认识无限世界']},
+                {h:'2. 真理的相对性（有条件性）'},{p:'① 从认识的<k>广度</k>看：任何真理只是对客观世界某一范围、方面的正确认识，有待扩展。',hl:['广度','有待扩展']},
+                {p:'② 从认识的<k>深度</k>看：任何真理只是对客观事物一定程度、层次的近似正确认识，有待深化。',hl:['深度','有待深化']},
+                {h:'3. 辩证关系'},{p:'① 二者<k>相互依存</k>：任何真理都是绝对性与相对性的统一，绝对真理寓于相对真理之中。',hl:['相互依存','寓于']},
+                {p:'② 相对真理的<k>不断积累</k>逐步走向绝对真理。',hl:['不断积累']},
+                {p:'③ 反对<k>绝对主义</k>（夸大绝对性）和<k>相对主义</k>（夸大相对性、否认真理客观性）。',hl:['绝对主义','相对主义']}
+            ]},
+            { id:'t14', title:'实践标准的确定性与不确定性', keyPoints:['确定性：唯一标准 + 不可推翻','不确定性：受历史制约 + 是过程'], answer:[
+                {h:'1. 实践标准的确定性（绝对性）'},{p:'① 实践是检验真理的<k>唯一标准</k>，除此之外没有其他标准。',hl:['唯一标准']},
+                {p:'② 凡经实践检验证实的真理，具有<k>不可推翻性</k>——即使未来的实践也不会完全否定其真理性。',hl:['不可推翻']},
+                {h:'2. 实践标准的不确定性（相对性）'},{p:'① 社会实践受<k>历史条件制约</k>，一定历史阶段的实践不能完全证实或驳倒一切认识。',hl:['历史条件制约']},
+                {p:'② 实践对真理的检验是一个<k>长期的、反复的过程</k>，不是一次完成的。',hl:['长期反复']},
+                {h:'3. 二者统一'},{p:'实践标准是确定性与不确定性的统一，二者不可割裂。',hl:['统一']}
+            ]}
+        ]
+    },
+    {
+        id: 'c4', category: '唯物史观', shortName: '唯物史观',
+        topics: [
+            { id:'t15', title:'社会存在与社会意识的辩证关系', keyPoints:['社会存在决定社会意识','社会意识具有相对独立性（4点）','能动反作用最突出'], answer:[
+                {h:'1. 社会存在决定社会意识'},{p:'社会存在是社会生活的物质条件总和，社会意识是社会存在的主观反映。社会存在发生变化，社会意识或早或迟必然发生变化。',hl:['物质条件','主观反映']},
+                {h:'2. 社会意识具有相对独立性'},{p:'① 与社会存在的发展<k>不完全同步、不平衡</k>——先进的社会意识可以超越现实，落后的社会意识会滞后于现实。',hl:['不完全同步','不平衡']},
+                {p:'② 社会意识内部各形式之间<k>相互影响、相互制约</k>。',hl:['相互影响']},
+                {p:'③ 社会意识具有<k>历史继承性</k>——每个时代的社会意识都继承前人的思想成果。',hl:['历史继承性']},
+                {p:'④ 社会意识对社会存在具有<k>能动的反作用</k>（这是相对独立性<k>最突出</k>的表现）：先进的社会意识促进社会发展，落后的社会意识阻碍社会发展。',hl:['能动反作用','最突出']}
+            ]},
+            { id:'t16', title:'人民群众是历史的创造者', keyPoints:['物质财富创造者','精神财富创造者','社会变革的决定力量','群众观点、群众路线'], answer:[
+                {p:'① 人民群众是<k>社会物质财富的创造者</k>——人民群众是生产力的首要要素，为人类生存和社会发展提供了物质基础。',hl:['物质财富','生产力首要要素']},
+                {p:'② 人民群众是<k>社会精神财富的创造者</k>——一切科学、文化、艺术的素材和实践源泉都来自人民群众的实践。',hl:['精神财富','实践源泉']},
+                {p:'③ 人民群众是<k>社会变革的决定力量</k>——社会革命、社会改革最终都是依靠人民群众的实践来推动和实现的。',hl:['社会变革','决定力量']},
+                {h:'方法论'},{p:'坚持<k>群众观点</k>，贯彻<k>群众路线</k>：一切为了群众，一切依靠群众，从群众中来，到群众中去。发展依靠人民、为了人民，发展成果由人民共享。',hl:['群众观点','群众路线']}
+            ]},
+            { id:'t17', title:'科学技术在社会发展中的双重作用', keyPoints:['积极作用：第一生产力、推动社会变革','消极作用：生态、伦理、异化、失业','受社会制度制约'], answer:[
+                {h:'积极作用（革命力量）'},{p:'① 科技是<k>第一生产力</k>，变革生产工具、提高劳动者素质、拓展劳动对象，大幅提升生产力水平。',hl:['第一生产力']},
+                {p:'② 推动<k>生产关系和社会制度变革</k>，促进社会形态进步。',hl:['社会制度变革']},
+                {p:'③ 提升人类认识能力，解放人们的思想，丰富精神文化生活。',hl:['解放思想']},
+                {h:'消极负面效应'},{p:'① 不合理运用造成<k>生态破坏、环境污染、资源枯竭</k>。',hl:['生态破坏']},
+                {p:'② 引发<k>伦理难题</k>：人工智能、基因编辑、数据隐私等带来新的伦理风险。',hl:['伦理难题']},
+                {p:'③ 资本主义制度下，科技<k>异化</k>为剥削劳动者、维持霸权扩张的工具。',hl:['异化','剥削']},
+                {p:'④ 自动化和智能化可能导致<k>结构性失业</k>，拉大贫富差距。',hl:['结构性失业']},
+                {h:'总结'},{p:'科技作用受<k>社会制度</k>和人的<k>价值观念</k>制约。要合理规制、以人为本发展科技。',hl:['社会制度','价值观念']}
+            ]},
+            { id:'t18', title:'生产力与生产关系的矛盾运动规律', keyPoints:['生产力决定生产关系','生产关系反作用于生产力','基本适合→不适合→新的基本适合'], answer:[
+                {h:'1. 生产力决定生产关系'},{p:'生产力的状况<k>决定</k>生产关系的性质；生产力的发展<k>推动</k>生产关系的变革。有什么样的生产力，最终就会有什么样的生产关系。',hl:['决定性质','推动变革']},
+                {h:'2. 生产关系反作用于生产力'},{p:'当生产关系<k>适合</k>生产力发展要求时，它促进生产力的发展；当生产关系<k>不适合</k>生产力发展要求时，它阻碍生产力的发展。',hl:['适合→促进','不适合→阻碍']},
+                {h:'3. 矛盾运动规律'},{p:'二者的矛盾运动遵循：<k>基本适合 → 不适合 → 新的基本适合</k>，如此循环往复，不断推动社会形态由低级向高级发展。',hl:['基本适合→不适合→新的基本适合']}
+            ]}
+        ]
+    },
+    {
+        id: 'c5', category: '政治经济学', shortName: '政治经济学',
+        topics: [
+            { id:'t19', title:'价值规律的内容、表现形式与双重作用', keyPoints:['内容：社会必要劳动时间决定价值量','形式：价格围绕价值波动','积极：调节、刺激、优胜劣汰','消极：自发性、垄断、两极分化'], answer:[
+                {h:'1. 基本内容'},{p:'商品的价值量由生产该商品的<k>社会必要劳动时间</k>决定；商品交换以价值量为基础实行<k>等价交换</k>。',hl:['社会必要劳动时间','等价交换']},
+                {h:'2. 表现形式'},{p:'价格围绕价值<k>上下波动</k>——这是价值规律发挥作用的唯一可能形式。',hl:['价格围绕价值波动']},
+                {h:'3. 积极作用'},{p:'① <k>自发调节</k>生产资料和劳动力在各生产部门之间的分配，配置社会资源；',hl:['自发调节','配置资源']},
+                {p:'② <k>刺激</k>商品生产者改进技术、提高劳动生产率，推动社会生产力发展；',hl:['刺激改进技术']},
+                {p:'③ 市场竞争实现<k>优胜劣汰</k>，优化市场主体结构。',hl:['优胜劣汰']},
+                {h:'4. 消极局限性'},{p:'① 调节具有<k>自发性、滞后性</k>，容易造成社会资源浪费；',hl:['自发性','滞后性']},
+                {p:'② 容易催生<k>垄断</k>，阻碍新技术的推广和应用；',hl:['垄断']},
+                {p:'③ 引起商品生产者<k>两极分化</k>，加剧贫富差距。',hl:['两极分化']}
+            ]},
+            { id:'t20', title:'商品二因素：使用价值与价值的对立统一', keyPoints:['使用价值：自然属性','价值：社会属性、无差别人类劳动','统一：缺一不可','对立：二者分离才能实现'], answer:[
+                {h:'1. 使用价值'},{p:'商品能够满足人们某种需要的属性，是商品的<k>自然属性</k>，构成社会财富的物质内容。',hl:['自然属性','物质内容']},
+                {h:'2. 价值'},{p:'凝结在商品中的<k>无差别的人类劳动</k>，是商品的<k>社会属性</k>，是商品特有的、区别于其他物品的本质属性。',hl:['无差别人类劳动','社会属性']},
+                {h:'3. 统一性'},{p:'商品必须<k>同时具备</k>使用价值和价值，缺一不可。没有使用价值的东西不可能有价值。',hl:['同时具备','缺一不可']},
+                {h:'4. 对立性'},{p:'商品生产者只能获得<k>价值</k>（通过交换），消费者只能获得<k>使用价值</k>（通过购买）。二者必须<k>分离</k>才能实现各自的目的。',hl:['价值','使用价值','分离']}
+            ]},
+            { id:'t21', title:'劳动二重性：具体劳动与抽象劳动', keyPoints:['具体劳动→使用价值','抽象劳动→价值','同一劳动的两个方面','理解政治经济学的枢纽'], answer:[
+                {h:'1. 具体劳动'},{p:'在<k>特定具体形式</k>下进行的劳动，如裁缝的劳动、铁匠的劳动。具体劳动<k>创造商品的使用价值</k>。',hl:['具体形式','创造使用价值']},
+                {h:'2. 抽象劳动'},{p:'撇开具体形式的<k>无差别的一般人类劳动</k>，即体力和脑力的消耗。抽象劳动<k>形成商品的价值</k>。',hl:['无差别','一般人类劳动','形成价值']},
+                {h:'3. 二者关系'},{p:'具体劳动和抽象劳动不是两次劳动，而是<k>同一劳动过程的两个方面</k>。劳动二重性理论是<k>理解政治经济学的枢纽</k>。',hl:['同一过程','两个方面','枢纽']}
+            ]},
+            { id:'t22', title:'劳动力商品的价值与使用价值的特殊性', keyPoints:['价值：三部分构成','使用价值特殊性：能创造剩余价值','货币转化为资本的关键'], answer:[
+                {h:'1. 劳动力商品的价值构成（三部分）'},{p:'① 维持劳动者<k>自身生存</k>所必需的生活资料的价值；',hl:['自身生存']},
+                {p:'② 维持劳动者<k>家属生存</k>所必需的生活资料的价值；',hl:['家属生存']},
+                {p:'③ 劳动者接受<k>教育和培训</k>所支出的费用。',hl:['教育培训']},
+                {h:'2. 使用价值的最大特殊性'},{p:'劳动力的使用过程（即劳动）能够创造出<k>比劳动力自身价值更大的价值</k>——即<k>剩余价值</k>。',hl:['更大的价值','剩余价值']},
+                {p:'这正是<k>货币转化为资本的关键</k>——资本家购买劳动力，正是看中了劳动力使用价值的这一特殊属性。',hl:['货币转化为资本']}
+            ]},
+            { id:'t23', title:'不变资本与可变资本的划分依据及意义', keyPoints:['划分依据：在剩余价值生产中的作用','不变资本c：生产资料','可变资本v：购买劳动力的资本','意义：揭示剩余价值真正来源'], answer:[
+                {h:'1. 划分依据'},{p:'依据资本的不同部分在<k>剩余价值生产</k>中所发挥的<k>不同作用</k>。',hl:['剩余价值生产','不同作用']},
+                {h:'2. 不变资本（c）'},{p:'用来购买<k>生产资料</k>的资本。在剩余价值生产过程中，生产资料只<k>转移</k>原有的价值，不产生新的价值，更不产生剩余价值。',hl:['生产资料','转移价值']},
+                {h:'3. 可变资本（v）'},{p:'用来购买<k>劳动力</k>的资本。劳动力在劳动过程中能创造出<k>大于自身价值的新价值</k>，即剩余价值。',hl:['劳动力','大于自身价值']},
+                {h:'4. 意义'},{p:'① <k>揭示</k>了剩余价值的真正来源是雇佣工人的剩余劳动，揭露了资本主义剥削的秘密；',hl:['剩余价值真正来源','剥削秘密']},
+                {p:'② 为计算<k>剩余价值率</k>（m\'=m/v）和<k>资本有机构成</k>（c:v）提供了理论依据。',hl:['剩余价值率','资本有机构成']}
+            ]},
+            { id:'t24', title:'资本积累的本质与社会后果', keyPoints:['本质：剩余价值转化为资本','后果：两极分化、相对过剩人口、激化基本矛盾'], answer:[
+                {h:'1. 资本积累的本质'},{p:'资本家把无偿占有的<k>剩余价值</k>的一部分再转化为资本，用来购买更多的生产资料和劳动力，<k>进一步扩大剥削规模</k>。',hl:['剩余价值转化为资本','扩大剥削']},
+                {h:'2. 社会后果'},{p:'① <k>加剧社会两极分化</k>——资本不断在资本家手中积累，工人阶级处境相对恶化。',hl:['两极分化']},
+                {p:'② 资本有机构成不断提高，造成<k>相对过剩人口</k>（大量失业和贫困）。',hl:['相对过剩人口']},
+                {p:'③ 进一步<k>激化</k>资本主义基本矛盾（生产社会化与生产资料私人占有之间的矛盾）。',hl:['激化基本矛盾']}
+            ]},
+            { id:'t25', title:'私有制商品经济的基本矛盾：私人劳动与社会劳动', keyPoints:['私人劳动：生产资料私有、自主生产','社会劳动：用于交换、具有社会性','矛盾：无法交换则不能转化','是一切矛盾的根源'], answer:[
+                {p:'① <k>私人劳动</k>：由于生产资料私有制，每个商品生产者独立决定生产什么、生产多少、怎样生产，劳动具有私人性质。',hl:['私人劳动','独立决定']},
+                {p:'② <k>社会劳动</k>：由于社会分工，每个商品生产者的劳动都是社会总劳动的一部分，产品用于社会交换，劳动具有社会性质。',hl:['社会劳动','社会总劳动']},
+                {p:'③ <k>矛盾表现</k>：当商品无法顺利卖出时，私人劳动不能转化为社会劳动，生产者的劳动得不到社会承认。',hl:['不能转化','得不到承认']},
+                {p:'④ <k>地位</k>：私人劳动与社会劳动的矛盾是商品经济<k>一切矛盾的根源</k>，决定了商品二因素矛盾、劳动二重性矛盾等其他所有矛盾。',hl:['一切矛盾根源']}
+            ]},
+            { id:'t26', title:'资本主义经济危机的实质与根源', keyPoints:['实质：生产相对过剩','根源：资本主义基本矛盾'], answer:[
+                {h:'1. 经济危机的实质'},{p:'<k>生产相对过剩</k>——不是社会产品绝对太多了、人们消费不了，而是生产的商品相对于劳动群众<k>有支付能力的需求</k>而言过剩了。劳动者买不起自己生产的产品。',hl:['生产相对过剩','有支付能力的需求']},
+                {h:'2. 根本根源'},{p:'<k>资本主义基本矛盾</k>——生产社会化与生产资料资本主义私人占有之间的矛盾。',hl:['资本主义基本矛盾','生产社会化','私人占有']},
+                {p:'这一矛盾表现为：个别企业生产的有组织性与整个社会生产无政府状态之间的矛盾；生产无限扩大的趋势与劳动群众有支付能力的需求相对缩小之间的矛盾。'}
+            ]}
+        ]
+    },
+    {
+        id: 'c6', category: '科学社会主义', shortName: '科学社会主义',
+        topics: [
+            { id:'t27', title:'社会主义从空想变为科学的两大理论基石', keyPoints:['唯物史观','剩余价值学说'], answer:[
+                {p:'两大理论基石：<k>唯物史观</k>和<k>剩余价值学说</k>。',hl:['唯物史观','剩余价值学说']},
+                {p:'① <k>唯物史观</k>揭示了人类社会发展的客观规律，指出社会主义取代资本主义是历史发展的必然趋势，使社会主义奠定在科学理论的基础之上。',hl:['唯物史观','客观规律']},
+                {p:'② <k>剩余价值学说</k>揭露了资本主义剥削的秘密，阐明了无产阶级的社会地位和历史使命，为无产阶级革命提供了理论指导。',hl:['剩余价值学说','剥削秘密','历史使命']}
+            ]},
+            { id:'t28', title:'国家垄断资本主义的本质', keyPoints:['国家政权与私人垄断资本结合','为垄断资产阶级整体利益服务','未改变资本主义根本性质'], answer:[
+                {p:'① 国家垄断资本主义是<k>资产阶级国家政权</k>与<k>私人垄断资本</k>相结合的垄断资本主义。',hl:['国家政权','私人垄断资本','结合']},
+                {p:'② 其本质是：为<k>垄断资产阶级的整体利益和长远利益</k>服务，维护和巩固资本主义制度。',hl:['整体利益','长远利益','维护资本主义制度']},
+                {p:'③ 国家垄断资本主义<k>没有改变</k>资本主义的根本性质——生产资料私有制依然存在，资本家与雇佣工人之间的剥削关系依然存在，资本主义基本矛盾依然存在。',hl:['没有改变','私有制','剥削关系']}
+            ]}
+        ]
+    },
+    {
+        id: 'c7', category: '补充高频题', shortName: '补充',
+        topics: [
+            { id:'t29', title:'什么是马克思主义？', keyPoints:['创立者','三个组成部分','根本目的'], answer:[
+                {p:'马克思主义是由<k>马克思、恩格斯创立</k>并为后继者不断发展的科学理论体系。',hl:['马克思','恩格斯','科学理论体系']},
+                {p:'它包含三个基本组成部分：<k>马克思主义哲学</k>（理论基础）、<k>马克思主义政治经济学</k>（主要内容）、<k>科学社会主义</k>（理论目的与归宿）。',hl:['马克思主义哲学','政治经济学','科学社会主义']},
+                {p:'马克思主义是关于自然、社会和人类思维发展<k>一般规律</k>的学说，是关于社会主义必然取代资本主义、最终实现共产主义的学说，是关于无产阶级解放、全人类解放和每个人自由全面发展的学说。',hl:['一般规律','共产主义','自由全面发展']}
+            ]},
+            { id:'t30', title:'如何理解世界的真正统一性在于它的物质性？', keyPoints:['世界本质是物质的','意识是物质的产物','实践是物质性活动'], answer:[
+                {p:'① 世界的本质是<k>物质</k>的，而不是精神的。自然界和人类社会在本质上都是物质的。',hl:['物质']},
+                {p:'② 意识是物质世界长期发展的<k>产物</k>，是人脑这种特殊物质的机能和属性，是对客观物质世界的主观映象。',hl:['产物','机能']},
+                {p:'③ 人类的社会实践是一种<k>物质性</k>的活动。世界的物质统一性，是在实践的基础上，通过人与自然的物质交换得到证明的。',hl:['物质性活动']}
+            ]},
+            { id:'t31', title:'自然规律与社会规律的联系与区别', keyPoints:['联系：都是客观规律','区别：实现方式不同（自发vs有目的活动）'], answer:[
+                {h:'联系'},{p:'自然规律与社会规律都是<k>客观的</k>，不以人的意志为转移。',hl:['客观的']},
+                {h:'区别'},{p:'① 自然规律通过<k>盲目的、自发的</k>力量相互作用表现出来，没有人参与也一样存在。',hl:['盲目','自发']},
+                {p:'② 社会规律是通过<k>有意识、有目的的人的活动</k>表现出来的。社会规律存在于人的活动之中，但不能归结为人的主观意志。',hl:['有意识有目的','人的活动']}
+            ]}
+        ]
+    }
+];
+
+// Flatten
+let allTopics = [];
+TOPICS.forEach(cat => {
+    cat.topics.forEach(t => {
+        t.categoryId = cat.id; t.categoryName = cat.category; t.shortName = cat.shortName;
+        allTopics.push(t);
+    });
+});
+
+// ═══════════ State ═══════════
+var LS_KEY = 'essay_review_v2_';
+var storage = {
+    get: function(k) { try { return JSON.parse(localStorage.getItem(LS_KEY + k)); } catch(e) { return null; } },
+    set: function(k, v) { try { localStorage.setItem(LS_KEY + k, JSON.stringify(v)); } catch(e) {} }
+};
+
+function restoreSet(key) {
+    var raw = storage.get(key);
+    return (raw && Array.isArray(raw)) ? new Set(raw) : null;
+}
+
+var state = {
+    ratings: storage.get('ratings') || {},
+    revealed: storage.get('revealed') || {},
+    reviewCount: storage.get('reviewCount') || {},
+    currentId: storage.get('currentId') || 't1',
+    mode: storage.get('mode') || 'all',
+    activeCats: restoreSet('activeCats'),
+    theme: storage.get('theme') || 'light',
+    answerVisible: false,
+    randomOrder: null,
+    randomIdx: 0
+};
+
+function save() {
+    storage.set('ratings', state.ratings);
+    storage.set('revealed', state.revealed);
+    storage.set('reviewCount', state.reviewCount);
+    storage.set('currentId', state.currentId);
+    storage.set('mode', state.mode);
+    storage.set('activeCats', state.activeCats ? Array.from(state.activeCats) : null);
+    storage.set('theme', state.theme);
+}
+
+// ═══════════ Filtering ═══════════
+function getFilteredTopics() {
+    var topics = allTopics.slice();
+    if (state.activeCats && state.activeCats.size > 0) {
+        topics = topics.filter(function(t) { return state.activeCats.has(t.categoryId); });
+    }
+    if (state.mode === 'weak') {
+        topics = topics.filter(function(t) { var r = state.ratings[t.id]; return r === 'forgot' || r === 'hard'; });
+    } else if (state.mode === 'unreviewed') {
+        topics = topics.filter(function(t) { return !state.revealed[t.id]; });
+    }
+    return topics;
+}
+
+function getCurrentTopic() {
+    if (state.mode === 'random') {
+        if (!state.randomOrder) generateRandomOrder();
+        if (state.randomOrder.length === 0) return null;
+        return allTopics.find(function(t) { return t.id === state.randomOrder[state.randomIdx]; }) || null;
+    }
+    return allTopics.find(function(t) { return t.id === state.currentId; }) || null;
+}
+
+function generateRandomOrder() {
+    var filtered = getFilteredTopics();
+    var ids = filtered.map(function(t) { return t.id; });
+    for (var i = ids.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = ids[i]; ids[i] = ids[j]; ids[j] = tmp;
+    }
+    state.randomOrder = ids;
+    state.randomIdx = 0;
+    if (ids.length > 0) state.currentId = ids[0];
+}
+
+// ═══════════ Navigation ═══════════
+function goToTopic(topicId) {
+    state.currentId = topicId;
+    state.answerVisible = false;
+    if (state.mode === 'random' && state.randomOrder) {
+        state.randomIdx = state.randomOrder.indexOf(topicId);
+        if (state.randomIdx === -1) state.randomIdx = 0;
+    }
+    save();
+    renderAll();
+}
+
+function nextTopic() {
+    if (state.mode === 'random') {
+        if (!state.randomOrder) generateRandomOrder();
+        if (state.randomOrder.length === 0) return;
+        state.randomIdx = (state.randomIdx + 1) % state.randomOrder.length;
+        state.currentId = state.randomOrder[state.randomIdx];
+    } else {
+        var filtered = getFilteredTopics();
+        if (filtered.length === 0) return;
+        var curIdx = filtered.findIndex(function(t) { return t.id === state.currentId; });
+        state.currentId = filtered[(curIdx + 1) % filtered.length].id;
+    }
+    state.answerVisible = false;
+    save(); renderAll();
+    document.getElementById('scrollArea').scrollTop = 0;
+}
+
+function prevTopic() {
+    if (state.mode === 'random') {
+        if (!state.randomOrder) generateRandomOrder();
+        if (state.randomOrder.length === 0) return;
+        state.randomIdx = (state.randomIdx - 1 + state.randomOrder.length) % state.randomOrder.length;
+        state.currentId = state.randomOrder[state.randomIdx];
+    } else {
+        var filtered = getFilteredTopics();
+        if (filtered.length === 0) return;
+        var curIdx = filtered.findIndex(function(t) { return t.id === state.currentId; });
+        state.currentId = filtered[(curIdx - 1 + filtered.length) % filtered.length].id;
+    }
+    state.answerVisible = false;
+    save(); renderAll();
+    document.getElementById('scrollArea').scrollTop = 0;
+}
+
+// ═══════════ Rating ═══════════
+function rateTopic(rating) {
+    var topic = getCurrentTopic();
+    if (!topic) return;
+    state.ratings[topic.id] = rating;
+    state.revealed[topic.id] = true;
+    state.reviewCount[topic.id] = (state.reviewCount[topic.id] || 0) + 1;
+    save(); renderAll();
+
+    var messages = { forgot: '已标记：忘记了', hard: '已标记：困难', good: '已标记：良好', easy: '已标记：轻松' };
+    showToast(messages[rating] || '已记录');
+}
+
+function showToast(msg) {
+    var toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 1500);
+}
+
+// ═══════════ Stats ═══════════
+function getStats() {
+    var reviewed = 0, mastered = 0, weak = 0;
+    allTopics.forEach(function(t) {
+        if (state.revealed[t.id]) reviewed++;
+        var r = state.ratings[t.id];
+        if (r === 'good' || r === 'easy') mastered++;
+        if (r === 'forgot' || r === 'hard') weak++;
+    });
+    return { reviewed: reviewed, mastered: mastered, weak: weak, total: allTopics.length };
+}
+
+// ═══════════ Render ═══════════
+function renderAll() {
+    renderStats();
+    renderCatFilters();
+    renderModeButtons();
+    renderTopicList();
+    renderCard();
+    updateTopbar();
+}
+
+function renderStats() {
+    var stats = getStats();
+    document.getElementById('statReviewed').textContent = stats.reviewed;
+    document.getElementById('statMastered').textContent = stats.mastered;
+    document.getElementById('statWeak').textContent = stats.weak;
+    document.getElementById('statTotal').textContent = stats.total;
+    document.getElementById('topbarTotal').textContent = stats.total;
+}
+
+function renderCatFilters() {
+    var container = document.getElementById('catFilters');
+    var html = '';
+    TOPICS.forEach(function(cat) {
+        var catTopics = cat.topics;
+        var reviewedInCat = catTopics.filter(function(t) { return state.revealed[t.id]; }).length;
+        var active = !state.activeCats || state.activeCats.has(cat.id);
+        html += '<span class="cat-chip' + (active ? ' active' : '') + '" data-cat="' + cat.id + '">' +
+            cat.shortName + '<span class="cnt">' + reviewedInCat + '/' + catTopics.length + '</span></span>';
+    });
+    container.innerHTML = html;
+}
+
+function renderModeButtons() {
+    document.querySelectorAll('.mode-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.mode === state.mode);
+    });
+}
+
+function renderTopicList() {
+    var container = document.getElementById('topicList');
+    var filtered = getFilteredTopics();
+    var current = getCurrentTopic();
+    var html = '';
+    var displayList = (state.mode === 'random' && state.randomOrder)
+        ? state.randomOrder.map(function(id) { return allTopics.find(function(t) { return t.id === id; }); }).filter(Boolean)
+        : filtered;
+
+    if (displayList.length === 0) {
+        html = '<div class="empty-state"><div class="empty-title">暂无匹配题目</div><p>调整筛选条件或切换模式</p></div>';
+    } else {
+        displayList.forEach(function(t, idx) {
+            var active = current && t.id === current.id;
+            var rating = state.ratings[t.id];
+            var dotClass = rating || '';
+            var dotVisible = rating ? 'visible' : '';
+            html += '<div class="topic-item' + (active ? ' active' : '') + '" data-id="' + t.id + '">' +
+                '<span class="idx">' + (idx + 1) + '</span>' +
+                '<span class="title">' + t.title + '</span>' +
+                '<span class="dot ' + dotClass + ' ' + dotVisible + '"></span></div>';
+        });
+    }
+    container.innerHTML = html;
+}
+
+function renderCard() {
+    var topic = getCurrentTopic();
+    var card = document.getElementById('reviewCard');
+    if (!topic) {
+        card.innerHTML = '<div class="empty-state"><div class="empty-title">暂无题目</div><p>请检查筛选条件或切换模式</p></div>';
+        return;
+    }
+
+    var rating = state.ratings[topic.id];
+
+    // Build answer HTML
+    var answerHtml = '';
+    topic.answer.forEach(function(item) {
+        if (item.h) {
+            answerHtml += '<h3>' + item.h + '</h3>';
+        } else if (item.p) {
+            var text = item.p;
+            if (item.hl && item.hl.length > 0) {
+                item.hl.forEach(function(kw) {
+                    text = text.split(kw).join('<span class="kw">' + kw + '</span>');
+                });
+            }
+            text = text.split('<k>').join('<span class="kw">').split('</k>').join('</span>');
+            answerHtml += '<div class="point">' + text + '</div>';
+        }
+    });
+
+    // Key points chips
+    var hintHtml = '';
+    topic.keyPoints.forEach(function(kp, i) {
+        hintHtml += '<span class="kp-chip">' + (i + 1) + '. ' + kp + '</span>';
+    });
+
+    card.innerHTML =
+        '<div class="card-category">' + topic.categoryName + '</div>' +
+        '<div class="card-title">' + topic.title + '</div>' +
+        '<div class="card-hint">' + hintHtml + '</div>' +
+        '<div class="answer-content' + (state.answerVisible ? ' visible' : '') + '">' + answerHtml + '</div>' +
+        (!state.answerVisible ?
+            '<div class="reveal-area"><button class="reveal-btn" id="revealBtn">显示答案</button></div>' : '') +
+        '<div class="rating-section' + (state.answerVisible ? ' visible' : '') + '">' +
+            '<div class="rating-hint">你的掌握程度如何？</div>' +
+            '<div class="rating-btns">' +
+                '<button class="rate-btn forgot" data-rating="forgot"><span class="rating-icon">&mdash;</span>忘记了</button>' +
+                '<button class="rate-btn hard" data-rating="hard"><span class="rating-icon">&minus;</span>困难</button>' +
+                '<button class="rate-btn good" data-rating="good"><span class="rating-icon">+</span>良好</button>' +
+                '<button class="rate-btn easy" data-rating="easy"><span class="rating-icon">&check;</span>轻松</button>' +
+            '</div>' +
+        '</div>' +
+        (rating ? '<div class="rating-history">' +
+            '上次评定：' + (rating === 'forgot' ? '忘记了' : rating === 'hard' ? '困难' : rating === 'good' ? '良好' : '轻松') +
+            (state.reviewCount[topic.id] ? ' &middot; 复习 ' + state.reviewCount[topic.id] + ' 次' : '') +
+        '</div>' : '');
+}
+
+function updateTopbar() {
+    var filtered = getFilteredTopics();
+    var current = getCurrentTopic();
+    var idx = filtered.findIndex(function(t) { return t.id === (current ? current.id : ''); });
+    var posEl = document.getElementById('topbarPos');
+    if (posEl) posEl.textContent = '第 ' + (idx + 1) + ' / ' + filtered.length + ' 题';
+}
+
+// ═══════════ Event Delegation ═══════════
+document.getElementById('catFilters').addEventListener('click', function(e) {
+    try {
+    var chip = e.target.closest('.cat-chip');
+    if (!chip) return;
+    var catId = chip.dataset.cat;
+    if (!state.activeCats) state.activeCats = new Set(TOPICS.map(function(c) { return c.id; }));
+    if (state.activeCats.has(catId)) {
+        state.activeCats.delete(catId);
+    } else {
+        state.activeCats.add(catId);
+    }
+    if (state.activeCats.size === 0 || state.activeCats.size === TOPICS.length) {
+        state.activeCats = null;
+    }
+    if (state.mode === 'random') { state.randomOrder = null; }
+    var filtered = getFilteredTopics();
+    if (filtered.length > 0 && !filtered.find(function(t) { return t.id === state.currentId; })) {
+        state.currentId = filtered[0].id;
+    }
+    save(); renderAll();
+    } catch(e) { console.error('cat filter error:', e); }
+});
+
+document.getElementById('topicList').addEventListener('click', function(e) {
+    try {
+    var item = e.target.closest('.topic-item');
+    if (!item) return;
+    goToTopic(item.dataset.id);
+    } catch(e) { console.error('topic click error:', e); }
+});
+
+document.getElementById('reviewCard').addEventListener('click', function(e) {
+    try {
+    var revealBtn = e.target.closest('#revealBtn');
+    if (revealBtn) { state.answerVisible = true; renderCard(); return; }
+    var rateBtn = e.target.closest('.rate-btn');
+    if (rateBtn) { rateTopic(rateBtn.dataset.rating); return; }
+    } catch(e) { console.error('card click error:', e); }
+});
+
+document.getElementById('btnPrev').addEventListener('click', prevTopic);
+document.getElementById('btnNext').addEventListener('click', nextTopic);
+document.getElementById('btnTheme').addEventListener('click', function() {
+    state.theme = state.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', state.theme);
+    save();
+});
+
+document.querySelectorAll('.mode-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        state.mode = btn.dataset.mode;
+        state.randomOrder = null;
+        state.answerVisible = false;
+        var filtered = getFilteredTopics();
+        if (filtered.length > 0) state.currentId = filtered[0].id;
+        save(); renderAll();
+    });
+});
+
+// Keyboard
+document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'j') {
+        e.preventDefault(); nextTopic();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'k') {
+        e.preventDefault(); prevTopic();
+    } else if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        if (!state.answerVisible) { state.answerVisible = true; renderCard(); }
+    } else if (e.key === '1') { rateTopic('forgot');
+    } else if (e.key === '2') { rateTopic('hard');
+    } else if (e.key === '3') { rateTopic('good');
+    } else if (e.key === '4') { rateTopic('easy'); }
+});
+
+// ═══════════ Init ═══════════
+(function init() {
+    if (state.theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    var filtered = getFilteredTopics();
+    if (filtered.length > 0 && !filtered.find(function(t) { return t.id === state.currentId; })) {
+        state.currentId = filtered[0].id;
+    }
+    if (!state.currentId && allTopics.length > 0) {
+        state.currentId = allTopics[0].id;
+    }
+    renderAll();
+})();
+</script>
+</body>
+</html>
