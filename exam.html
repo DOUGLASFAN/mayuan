@@ -167,19 +167,58 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     .auto-toggle.on .toggle-thumb{left:12px}
 }
 /* Mobile */
-.mobile-menu-btn{display:none;width:36px;height:36px;border:none;background:var(--bg);border-radius:var(--radius-sm);cursor:pointer;font-size:18px;align-items:center;justify-content:center}
+.mobile-menu-btn{display:none;width:40px;height:40px;border:none;background:var(--bg);border-radius:var(--radius-sm);cursor:pointer;font-size:20px;align-items:center;justify-content:center;flex-shrink:0}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:45;transition:opacity .3s}
+.sidebar-overlay.show{display:block}
 @media(max-width:768px){
     body{flex-direction:column}
     .sidebar{position:fixed;left:0;top:0;bottom:0;width:280px;min-width:280px;transform:translateX(-100%);transition:transform .3s;z-index:50;box-shadow:var(--shadow-lg)}
     .sidebar.open{transform:translateX(0)}
+    .sidebar-overlay{display:block;pointer-events:none;opacity:0}
+    .sidebar-overlay.show{opacity:1;pointer-events:auto}
     .mobile-menu-btn{display:flex}
-    .topbar{padding:8px 12px}
-    .quiz-area{padding:12px}
-    .quiz-card{padding:16px 12px;border-radius:var(--radius-sm)}
-    .stat-grid{grid-template-columns:repeat(2,1fr)}
-    .topbar-actions{gap:4px}
+    .topbar{padding:6px 10px}
+    .topbar-actions{gap:4px;flex-wrap:wrap;justify-content:flex-end}
+    .topbar-btn{padding:6px 8px;font-size:11px;min-height:34px}
     .topbar-btn span{display:none}
     .topbar-btn .badge{display:inline}
+    .quiz-area{padding:10px;padding-bottom:80px}
+    .quiz-card{padding:16px 12px;border-radius:var(--radius-sm)}
+    .quiz-stem{font-size:14px;line-height:1.7}
+    .option-btn{padding:12px 10px;font-size:13px;min-height:44px;align-items:center}
+    .option-label{min-width:28px;height:28px;font-size:13px}
+    .nav-row{position:fixed;bottom:0;left:0;right:0;background:var(--bg);padding:8px 10px;border-top:1px solid var(--border);z-index:30;gap:8px;flex-wrap:nowrap}
+    .nav-btn{padding:8px 14px;font-size:13px;min-height:40px;white-space:nowrap}
+    .nav-info{font-size:11px;min-width:40px}
+    .stat-grid{grid-template-columns:repeat(2,1fr)}
+    .stat-card{padding:12px 8px}
+    .stat-card .stat-val{font-size:22px}
+    .modal{width:96%;max-width:96vw;max-height:90vh;border-radius:var(--radius)}
+    .modal-header{padding:12px 14px}
+    .modal-header h2{font-size:14px}
+    .modal-body{padding:12px 14px}
+    .stat-table{font-size:11px}
+    .stat-table th,.stat-table td{padding:5px 6px}
+    .wrong-item{padding:8px 10px;flex-wrap:wrap}
+    .wrong-item .wi-title{font-size:12px}
+    .question-list{padding:4px 2px}
+    .q-item{padding:7px 6px;font-size:12px;min-height:38px}
+    .search-box{padding:8px 10px;font-size:13px;min-height:36px}
+    .filter-tag{padding:4px 9px;font-size:12px}
+    .mode-btn{padding:7px 4px;font-size:11px;min-height:32px}
+    .filter-section{max-height:180px}
+    .essay-toggle button,.essay-toggle .show-btn{padding:10px 20px;font-size:14px;min-height:44px}
+    .answer-section{margin-top:12px;padding:12px}
+    .answer-section .answer-content{font-size:13px}
+}
+@media(max-width:400px){
+    .topbar-btn{padding:5px 6px;font-size:10px;min-height:30px}
+    .nav-btn{padding:7px 10px;font-size:12px}
+    .stat-grid{grid-template-columns:1fr}
+    .quiz-header{flex-direction:column;align-items:flex-start}
+    .option-btn{padding:10px 8px;font-size:12px;min-height:42px}
+    .quiz-stem{font-size:13px}
+    .topbar-actions{gap:2px}
 }
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 </style>
@@ -214,6 +253,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
   <div class="question-list" id="questionList"></div>
 </aside>
+
+<!-- Sidebar overlay for mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- Main -->
 <div class="main">
@@ -303,8 +345,10 @@ async function loadQuestions() {
     try {
         const resp = await fetch('data.json');
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        const jsonData = await resp.json();
+        const jsonText = await resp.text();
+        const jsonData = JSON.parse(jsonText);
         QUESTIONS = transformQuestions(jsonData);
+        STORAGE.set('dataCache', { data: jsonText, timestamp: Date.now(), count: QUESTIONS.length });
         console.log('已加载 ' + QUESTIONS.length + ' 道题目');
         return true;
     } catch (err) {
@@ -334,6 +378,7 @@ let state = {
     answers: STORAGE.get('answers') || {},
     theme: STORAGE.get('theme') || 'light',
     autoAdvance: STORAGE.get('autoAdvance') !== false, // default on
+    randomOrder: null, // stable shuffled order for random mode (session-only, not persisted)
 };
 
 // Persist state
@@ -374,14 +419,29 @@ function getModeQuestions() {
         return [...undone, ...done];
     }
     if (state.mode === 'random') {
-        // seeded shuffle for consistency within session
-        const arr = [...filtered];
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
+        // Stable shuffle: generate once, reuse until explicitly invalidated
+        const filteredIds = new Set(filtered.map(q => q.id));
+        const needRegen = !state.randomOrder
+            || state.randomOrder.length !== filtered.length
+            || !state.randomOrder.every(id => filteredIds.has(id));
+        if (needRegen) {
+            state.randomOrder = [...filtered.map(q => q.id)];
+            for (let i = state.randomOrder.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [state.randomOrder[i], state.randomOrder[j]] = [state.randomOrder[j], state.randomOrder[i]];
+            }
+            // Reset index if out of bounds
+            if (state.currentIndex >= state.randomOrder.length) {
+                state.currentIndex = 0;
+            }
         }
-        return arr;
+        // Map IDs back to questions in stable shuffled order
+        const idMap = {};
+        filtered.forEach(q => { idMap[q.id] = q; });
+        return state.randomOrder.map(id => idMap[id]).filter(Boolean);
     }
+    // Non-random mode: invalidate randomOrder to free memory
+    state.randomOrder = null;
     return filtered;
 }
 
@@ -742,6 +802,7 @@ document.getElementById('chapterTags').addEventListener('click', e => {
         state.chapterFilter.add(ch);
     }
     state.currentIndex = 0;
+    state.randomOrder = null;
     saveFilterState();
     renderAll();
 });
@@ -756,6 +817,7 @@ document.getElementById('typeTags').addEventListener('click', e => {
         state.typeFilter.add(t);
     }
     state.currentIndex = 0;
+    state.randomOrder = null;
     saveFilterState();
     renderAll();
 });
@@ -765,6 +827,7 @@ document.getElementById('modeSelector').addEventListener('click', e => {
     if (!btn) return;
     state.mode = btn.dataset.mode;
     state.currentIndex = 0;
+    state.randomOrder = null;
     saveFilterState();
     renderAll();
 });
@@ -772,6 +835,7 @@ document.getElementById('modeSelector').addEventListener('click', e => {
 document.getElementById('searchInput').addEventListener('input', e => {
     state.searchQuery = e.target.value;
     state.currentIndex = 0;
+    state.randomOrder = null;
     saveFilterState();
     renderAll();
 });
@@ -790,23 +854,45 @@ document.getElementById('themeToggle').addEventListener('click', () => {
     STORAGE.set('theme', state.theme);
 });
 
-// Random jump
+// Random jump — switches to random mode and shuffles
 document.getElementById('randomBtn').addEventListener('click', () => {
-    const qs = getModeQuestions();
+    const qs = getFilteredQuestions();
     if (qs.length === 0) return;
-    const randomIdx = Math.floor(Math.random() * qs.length);
-    goToQuestion(randomIdx);
+    // Switch to random mode
+    if (state.mode !== 'random') {
+        state.mode = 'random';
+        saveFilterState();
+    }
+    // Force fresh shuffle
+    state.randomOrder = null;
+    state.currentIndex = 0;
+    renderAll();
+    STORAGE.set('currentIndex', state.currentIndex);
 });
 
 // Mobile menu
+function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('show');
+}
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+}
 document.getElementById('mobileMenuBtn').addEventListener('click', () => {
-    document.getElementById('sidebar').classList.toggle('open');
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar.classList.contains('open')) {
+        closeSidebar();
+    } else {
+        openSidebar();
+    }
 });
+document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
 
 // Close sidebar on mobile when clicking question
 document.getElementById('questionList').addEventListener('click', () => {
     if (window.innerWidth <= 768) {
-        document.getElementById('sidebar').classList.remove('open');
+        closeSidebar();
     }
 });
 
@@ -961,7 +1047,7 @@ window.jumpToWrong = function(qid) {
     if (idx >= 0) {
         state.currentIndex = idx;
         renderAll();
-        document.getElementById('sidebar').classList.remove('open');
+        closeSidebar();
     }
 };
 window.removeFromWrong = function(qid) {
@@ -1079,11 +1165,23 @@ document.addEventListener('keydown', e => {
 
 // ========== Init ==========
 (async function init() {
-    const ok = await loadQuestions();
-    if (!ok) return;
+    // 1. Try localStorage cache first (synchronous, instant)
+    const cached = STORAGE.get('dataCache');
+    if (cached && cached.data) {
+        try {
+            const jsonData = JSON.parse(cached.data);
+            QUESTIONS = transformQuestions(jsonData);
+            console.log('从缓存加载 ' + QUESTIONS.length + ' 道题目');
+        } catch (e) { /* fall through to network */ }
+    }
 
+    // 2. If no cache available, must wait for network
+    if (QUESTIONS.length === 0) {
+        const ok = await loadQuestions();
+        if (!ok) return;
+    }
 
-    // Re-initialize filters that depend on QUESTIONS (was empty at script parse time)
+    // 3. Re-initialize filters that depend on QUESTIONS (was empty at script parse time)
     if (!STORAGE.get("chapterFilter")) {
         state.chapterFilter = new Set(QUESTIONS.map(q => q.chapterCode));
     }
@@ -1113,6 +1211,26 @@ document.addEventListener('keydown', e => {
     }
 
     renderAll();
+
+    // 4. Background: refresh cache from network silently
+    fetch('data.json')
+        .then(resp => {
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            return resp.text();
+        })
+        .then(jsonText => {
+            if (!cached || cached.data !== jsonText) {
+                const jsonData = JSON.parse(jsonText);
+                QUESTIONS = transformQuestions(jsonData);
+                STORAGE.set('dataCache', { data: jsonText, timestamp: Date.now(), count: QUESTIONS.length });
+                // Reset filters for updated data
+                state.chapterFilter = new Set(QUESTIONS.map(q => q.chapterCode));
+                state.currentIndex = Math.min(state.currentIndex, getModeQuestions().length - 1);
+                renderAll();
+                console.log('后台更新题库 ' + QUESTIONS.length + ' 题');
+            }
+        })
+        .catch(() => {}); // silent fail — cache is already serving the UI
 })();
 </script>
 </body>

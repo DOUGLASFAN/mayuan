@@ -2,6 +2,7 @@
 const http = require('http');
 const fs   = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 
 const PORT = 3000;
 const ROOT = __dirname;
@@ -17,6 +18,18 @@ const MIME = {
     '.svg':  'image/svg+xml',
     '.ico':  'image/x-icon',
 };
+
+// Text-based MIME types that benefit from gzip
+const COMPRESSIBLE = new Set([
+    'text/html; charset=utf-8',
+    'text/css; charset=utf-8',
+    'application/javascript; charset=utf-8',
+    'application/json; charset=utf-8',
+    'text/markdown; charset=utf-8',
+    'image/svg+xml',
+]);
+
+const GZIP_THRESHOLD = 1024; // only compress responses > 1KB
 
 const server = http.createServer((req, res) => {
     // Decode URL and prevent directory traversal
@@ -46,8 +59,29 @@ const server = http.createServer((req, res) => {
             }
             return;
         }
-        res.writeHead(200, { 'Content-Type': mime });
-        res.end(data);
+
+        const acceptGzip = (req.headers['accept-encoding'] || '').includes('gzip');
+        const shouldCompress = acceptGzip && COMPRESSIBLE.has(mime) && data.length > GZIP_THRESHOLD;
+
+        if (shouldCompress) {
+            res.writeHead(200, {
+                'Content-Type': mime,
+                'Content-Encoding': 'gzip',
+                'Vary': 'Accept-Encoding',
+            });
+            zlib.gzip(data, (gzErr, compressed) => {
+                if (gzErr) {
+                    // Fallback: send uncompressed if gzip fails
+                    res.writeHead(200, { 'Content-Type': mime });
+                    res.end(data);
+                } else {
+                    res.end(compressed);
+                }
+            });
+        } else {
+            res.writeHead(200, { 'Content-Type': mime });
+            res.end(data);
+        }
     });
 });
 
@@ -60,7 +94,7 @@ server.listen(PORT, () => {
     console.log('  │  简答题复习  http://localhost:' + PORT + '/review.html');
     console.log('  │  首页导航    http://localhost:' + PORT + '/');
     console.log('  ├────────────────────────────────────────┤');
-    console.log('  │  按 Ctrl+C 停止服务器                  │');
+    console.log('  │  Gzip 已启用 · 按 Ctrl+C 停止服务器    │');
     console.log('  ╰────────────────────────────────────────╯');
     console.log('');
 });

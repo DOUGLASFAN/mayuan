@@ -398,44 +398,84 @@ body {
 }
 
 /* ═══════════ Responsive ═══════════ */
+.mobile-menu-btn {
+    display: none; width: 40px; height: 40px;
+    border: 1px solid var(--border-light); border-radius: var(--radius-sm);
+    cursor: pointer; background: transparent; font-size: 20px;
+    color: var(--text-secondary); align-items: center; justify-content: center;
+    flex-shrink: 0; margin-right: var(--space-xs); transition: var(--transition);
+}
+.mobile-menu-btn:hover { background: var(--surface-hover); color: var(--text); }
+
+.sidebar-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.4); z-index: 45;
+    transition: opacity .3s;
+}
+.sidebar-overlay.show { display: block; }
+
 @media (max-width: 768px) {
     body { flex-direction: column; }
     .sidebar {
-        width: 100%; min-width: 100%;
-        max-height: 45%; border-right: none;
-        border-bottom: 1px solid var(--border);
+        position: fixed; left: 0; top: 0; bottom: 0;
+        width: 280px; min-width: 280px;
+        transform: translateX(-100%);
+        transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 50; box-shadow: var(--shadow-lg);
+        max-height: 100%; border-right: 1px solid var(--border);
+        border-bottom: none;
     }
-    .main { height: 55%; }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-overlay { display: block; pointer-events: none; opacity: 0; }
+    .sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+    .mobile-menu-btn { display: flex; }
+    .main { height: 100%; flex: 1; }
     .sidebar-header { padding: var(--space-md); }
     .sidebar-header h1 { font-size: 16px; }
     .stats-row { padding: 0 var(--space-sm) var(--space-sm); }
+    .stat-cell .val { font-size: 18px; }
+    .stat-cell .lbl { font-size: 9px; }
     .cat-filters { padding: 0 var(--space-sm) var(--space-xs); }
+    .cat-chip { padding: 5px 11px; font-size: 12px; min-height: 32px; }
     .mode-toggles { padding: 0 var(--space-sm) var(--space-xs); }
-    .topic-list { max-height: 200px; }
+    .mode-btn { padding: 8px 4px; font-size: 11px; min-height: 34px; }
+    .topic-list { max-height: none; flex: 1; }
+    .topic-item { padding: 9px 10px; font-size: 13px; min-height: 40px; }
+    .topbar { padding: 8px var(--space-md); }
     .scroll-area { padding: var(--space-md); }
     .review-card { padding: var(--space-lg); border-radius: var(--radius); }
     .card-title { font-size: 18px; }
+    .answer-content { padding: var(--space-md); font-size: 14px; }
+    .answer-content .point { font-size: 14px; }
+    .reveal-btn { padding: 14px 36px; font-size: 15px; min-height: 48px; width: 100%; max-width: 280px; }
     .rating-btns { flex-wrap: wrap; }
-    .rate-btn { flex: 1 1 45%; }
-    .topbar { padding: 8px var(--space-md); }
+    .rate-btn { flex: 1 1 45%; padding: 14px var(--space-sm); font-size: 13px; min-height: 48px; }
+    .card-hint .kp-chip { font-size: 12px; padding: 4px 11px; }
+    .icon-btn { width: 38px; height: 38px; font-size: 16px; }
 }
 
 @media (max-width: 480px) {
-    .sidebar { max-height: 40%; }
-    .main { height: 60%; }
+    .sidebar { width: 260px; min-width: 260px; }
     .scroll-area { padding: var(--space-sm); }
     .review-card { padding: var(--space-md); }
     .card-title { font-size: 16px; }
-    .answer-content { padding: var(--space-md); font-size: 13px; }
+    .answer-content { padding: var(--space-sm); font-size: 13px; }
     .answer-content .point { font-size: 13px; }
-    .rate-btn { flex: 1 1 100%; }
+    .rate-btn { flex: 1 1 100%; padding: 12px var(--space-sm); font-size: 12px; min-height: 44px; }
+    .reveal-btn { font-size: 14px; min-height: 44px; }
+    .topbar { padding: 6px var(--space-sm); }
+    .topbar-breadcrumb { font-size: 11px; }
+    .card-hint .kp-chip { font-size: 11px; }
+    .topic-item { font-size: 12px; min-height: 38px; }
+    .cat-chip { font-size: 11px; }
+    .stat-cell .val { font-size: 16px; }
 }
 </style>
 </head>
 <body>
 
 <!-- ═══════════ Sidebar ═══════════ -->
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <h1>马克思主义原理</h1>
         <div class="subtitle">简答题高频考点 · 背诵复习</div>
@@ -463,10 +503,16 @@ body {
     <nav class="topic-list" id="topicList"></nav>
 </aside>
 
+<!-- Sidebar overlay for mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <!-- ═══════════ Main ═══════════ -->
 <main class="main">
     <div class="topbar">
-        <div class="topbar-breadcrumb">共 <span id="topbarTotal">0</span> 题 · <span id="topbarPos"></span></div>
+        <div style="display:flex;align-items:center;gap:8px">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" title="目录">☰</button>
+            <div class="topbar-breadcrumb">共 <span id="topbarTotal">0</span> 题 · <span id="topbarPos"></span></div>
+        </div>
         <div class="topbar-actions">
             <button class="icon-btn" id="btnPrev" title="上一题">&larr;</button>
             <button class="icon-btn" id="btnNext" title="下一题">&rarr;</button>
@@ -1061,6 +1107,33 @@ document.querySelectorAll('.mode-btn').forEach(function(btn) {
         if (filtered.length > 0) state.currentId = filtered[0].id;
         save(); renderAll();
     });
+});
+
+// Mobile menu
+function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('show');
+}
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+}
+document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+    var sidebar = document.getElementById('sidebar');
+    if (sidebar.classList.contains('open')) {
+        closeSidebar();
+    } else {
+        openSidebar();
+    }
+});
+document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+
+// Close sidebar on mobile when clicking a topic
+document.getElementById('topicList').addEventListener('click', function(e) {
+    var item = e.target.closest('.topic-item');
+    if (item && window.innerWidth <= 768) {
+        closeSidebar();
+    }
 });
 
 // Keyboard

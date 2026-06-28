@@ -7,55 +7,332 @@
 <style>
 :root {
     --bg: #fafaf7; --surface: #ffffff; --text: #1d1d1f;
-    --text-secondary: #6e6e73; --border: #e8e5e0;
+    --text-secondary: #6e6e73; --text-tertiary: #aeaeb2;
+    --border: #e8e5e0; --border-light: #f0ede8;
     --accent: #7d5a3c; --accent-soft: #f5f1ec;
+    --good: #4a7c4f; --good-soft: #eef4ef;
+    --warn: #b87a3a; --warn-soft: #faf5ef;
+    --bad: #b8433a; --bad-soft: #faf0ef;
     --font-serif: 'Iowan Old Style', 'Noto Serif SC', 'Songti SC', Georgia, serif;
     --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md: 0 2px 8px rgba(0,0,0,.06);
+    --radius: 10px; --radius-sm: 6px;
+    --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-theme="dark"] {
+    --bg: #1c1c1e; --surface: #262628; --text: #e4e4e5;
+    --text-secondary: #98989d; --text-tertiary: #636366;
+    --border: #38383a; --border-light: #2e2e30;
+    --accent: #c9976b; --accent-soft: #2d2620;
+    --good: #6aaa6f; --good-soft: #1a2a1c;
+    --warn: #d4a04a; --warn-soft: #2a2218;
+    --bad: #cc5a52; --bad-soft: #2a1c1a;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.15);
+    --shadow-md: 0 2px 8px rgba(0,0,0,.25);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
     font-family: var(--font-sans); background: var(--bg); color: var(--text);
     min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased; padding: 24px;
 }
-.container { text-align: center; padding: 48px 24px; max-width: 520px; }
-h1 {
+.container { max-width: 560px; width: 100%; }
+
+/* Header */
+.header { text-align: center; margin-bottom: 32px; }
+.header h1 {
     font-family: var(--font-serif); font-size: 26px; font-weight: 600;
-    letter-spacing: 1px; margin-bottom: 8px;
+    letter-spacing: 1px; margin-bottom: 4px;
 }
-.subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 48px; letter-spacing: .3px; }
-.cards { display: flex; flex-direction: column; gap: 12px; }
+.header .subtitle { font-size: 13px; color: var(--text-secondary); letter-spacing: .3px; }
+
+/* Stat Grid */
+.stat-section { margin-bottom: 24px; }
+.stat-section-label {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--text-tertiary); margin-bottom: 8px;
+    padding-left: 4px;
+}
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+.stat-cell {
+    text-align: center; padding: 14px 8px;
+    background: var(--surface); border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+}
+.stat-cell .val {
+    font-size: 24px; font-weight: 700; color: var(--text);
+    font-family: var(--font-serif); line-height: 1.1;
+}
+.stat-cell .val.good { color: var(--good); }
+.stat-cell .val.warn { color: var(--warn); }
+.stat-cell .val.bad  { color: var(--bad); }
+.stat-cell .lbl {
+    font-size: 10px; color: var(--text-tertiary);
+    letter-spacing: .5px; margin-top: 4px;
+}
+.stat-cell .sub {
+    font-size: 9px; color: var(--text-tertiary); margin-top: 1px;
+}
+
+/* Progress bar */
+.progress-wrap { margin-bottom: 8px; }
+.progress-bar {
+    height: 4px; background: var(--border-light);
+    border-radius: 2px; overflow: hidden; margin-top: 6px;
+}
+.progress-bar .fill {
+    height: 100%; background: var(--accent); border-radius: 2px;
+    transition: width .6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Cards */
+.cards { display: flex; flex-direction: column; gap: 10px; }
 .card {
-    display: block; padding: 24px 28px; background: var(--surface);
-    border-radius: 12px; border: 1px solid var(--border);
-    text-decoration: none; text-align: left;
+    display: block; padding: 20px 24px; background: var(--surface);
+    border-radius: var(--radius); border: 1px solid var(--border-light);
+    text-decoration: none; text-align: left; box-shadow: var(--shadow-sm);
     transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 2px rgba(0,0,0,.04);
 }
-.card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.07); border-color: var(--accent); }
-.card-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+.card-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.card-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
 .card-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
-.card-meta { font-size: 10px; color: var(--accent); margin-top: 8px; letter-spacing: .5px; text-transform: uppercase; }
-.footer { margin-top: 48px; font-size: 11px; color: #bbb; }
+.card-status {
+    font-size: 11px; color: var(--accent); margin-top: 8px;
+    letter-spacing: .3px; display: flex; align-items: center; gap: 4px;
+}
+.card-badge {
+    font-size: 10px; padding: 2px 8px; border-radius: 10px;
+    font-weight: 500; white-space: nowrap;
+    background: var(--accent-soft); color: var(--accent);
+}
+.card-badge.warn { background: var(--warn-soft); color: var(--warn); }
+.card-badge.good { background: var(--good-soft); color: var(--good); }
+
+/* Theme toggle */
+.theme-toggle {
+    position: fixed; top: 16px; right: 16px;
+    width: 36px; height: 36px; border: 1px solid var(--border-light);
+    border-radius: 50%; cursor: pointer; background: var(--surface);
+    font-size: 16px; display: flex; align-items: center; justify-content: center;
+    transition: var(--transition); z-index: 10;
+}
+.theme-toggle:hover { background: var(--bg); border-color: var(--border); }
+
+/* Footer */
+.footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--text-tertiary); }
+
+/* Empty state */
+.empty-hint { font-size: 12px; color: var(--text-tertiary); text-align: center; padding: 4px; }
+
+/* Responsive */
+@media (max-width: 480px) {
+    body { padding: 16px; align-items: flex-start; padding-top: 48px; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-cell { padding: 12px 6px; }
+    .stat-cell .val { font-size: 20px; }
+    .header h1 { font-size: 22px; }
+    .card { padding: 16px 18px; }
+    .card-title { font-size: 14px; }
+    .card-row { flex-direction: column; gap: 4px; }
+}
 </style>
 </head>
 <body>
+
+<button class="theme-toggle" id="themeToggle" title="切换主题">🌓</button>
+
 <div class="container">
-    <h1>马克思主义原理</h1>
-    <p class="subtitle">刷题复习系统</p>
+    <div class="header">
+        <h1>马克思主义原理</h1>
+        <p class="subtitle">刷题复习系统</p>
+    </div>
+
+    <!-- Exam Stats -->
+    <div class="stat-section">
+        <div class="stat-section-label">选择题 · 判断题</div>
+        <div class="stat-grid" id="examStats">
+            <div class="stat-cell"><div class="val">-</div><div class="lbl">已做</div></div>
+            <div class="stat-cell"><div class="val">-</div><div class="lbl">正确率</div></div>
+            <div class="stat-cell"><div class="val">-</div><div class="lbl">错题</div></div>
+            <div class="stat-cell"><div class="val">-</div><div class="lbl">收藏</div></div>
+        </div>
+        <div class="progress-wrap">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-tertiary)">
+                <span>总进度</span><span id="examProgressLabel">-</span>
+            </div>
+            <div class="progress-bar"><div class="fill" id="examProgressBar" style="width:0%"></div></div>
+        </div>
+    </div>
+
+    <!-- Essay Stats -->
+    <div class="stat-section">
+        <div class="stat-section-label">简答题 · 背诵</div>
+        <div class="stat-grid" id="essayStats">
+            <div class="stat-cell"><div class="val">-</div><div class="lbl">已复习</div></div>
+            <div class="stat-cell"><div class="val">-</div><div class="lbl">已掌握</div></div>
+            <div class="stat-cell"><div class="val">-</div><div class="lbl">薄弱</div></div>
+            <div class="stat-cell"><div class="val">-</div><div class="lbl">总计</div></div>
+        </div>
+    </div>
+
+    <!-- Entry Cards -->
     <div class="cards">
-        <a class="card" href="/exam.html">
-            <div class="card-title">选择题 · 判断题</div>
-            <div class="card-desc">454 道题目，按章节分类，支持单选、多选、材料分析。自动批改、错题本、收藏夹。</div>
-            <div class="card-meta">进入刷题 &rarr;</div>
+        <a class="card" href="exam.html">
+            <div class="card-row">
+                <div>
+                    <div class="card-title">选择题 · 判断题</div>
+                    <div class="card-desc">454 道题目，按章节分类，支持单选、多选、材料分析。自动批改、错题本、收藏夹。</div>
+                </div>
+            </div>
+            <div class="card-status" id="examCardStatus">加载中...</div>
         </a>
-        <a class="card" href="/review.html">
-            <div class="card-title">简答题 · 背诵复习</div>
-            <div class="card-desc">31 道高频考点，主动回忆 + 自我评估模式。按薄弱环节精准复习。</div>
-            <div class="card-meta">进入复习 &rarr;</div>
+        <a class="card" href="review.html">
+            <div class="card-row">
+                <div>
+                    <div class="card-title">简答题 · 背诵复习</div>
+                    <div class="card-desc">31 道高频考点，主动回忆 + 自我评估模式。按薄弱环节精准复习。</div>
+                </div>
+            </div>
+            <div class="card-status" id="essayCardStatus">加载中...</div>
         </a>
     </div>
+
     <p class="footer">本地服务器 · 仅供学习使用</p>
 </div>
+
+<script>
+// ========== Theme ==========
+(function() {
+    // System preference detection (first visit only)
+    var examTheme = localStorage.getItem('marx_quiz_theme');
+    var essayTheme = localStorage.getItem('essay_review_v2_theme');
+    var savedTheme = examTheme || essayTheme;
+    if (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else if (savedTheme) {
+        try { var t = JSON.parse(savedTheme); if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch(e) {}
+    }
+})();
+
+document.getElementById('themeToggle').addEventListener('click', function() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    // Save to both app storage keys
+    localStorage.setItem('marx_quiz_theme', JSON.stringify(next));
+    localStorage.setItem('essay_review_v2_theme', JSON.stringify(next));
+});
+
+// ========== Read localStorage ==========
+function safeGet(key) {
+    try { return JSON.parse(localStorage.getItem(key)); } catch(e) { return null; }
+}
+
+function getExamStats() {
+    var answers = safeGet('marx_quiz_answers') || {};
+    var wrongSet = safeGet('marx_quiz_wrongSet') || [];
+    var favSet = safeGet('marx_quiz_favSet') || [];
+    var dataCache = safeGet('marx_quiz_dataCache');
+    var total = (dataCache && dataCache.count) ? dataCache.count : 454;
+
+    var doneIds = Object.keys(answers);
+    var done = doneIds.length;
+    var correct = doneIds.filter(function(id) { return answers[id] && answers[id].correct; }).length;
+    var accuracy = done > 0 ? Math.round(correct / done * 100) : 0;
+    var wrongCount = Array.isArray(wrongSet) ? wrongSet.length : (wrongSet instanceof Set ? wrongSet.size : 0);
+    var favCount = Array.isArray(favSet) ? favSet.length : (favSet instanceof Set ? favSet.size : 0);
+
+    return { total: total, done: done, correct: correct, accuracy: accuracy, wrong: wrongCount, fav: favCount };
+}
+
+function getEssayStats() {
+    var ratings = safeGet('essay_review_v2_ratings') || {};
+    var revealed = safeGet('essay_review_v2_revealed') || {};
+    var total = 31;
+
+    var reviewed = Object.keys(revealed).length;
+    var mastered = 0, weak = 0;
+    Object.keys(ratings).forEach(function(id) {
+        var r = ratings[id];
+        if (r === 'good' || r === 'easy') mastered++;
+        if (r === 'forgot' || r === 'hard') weak++;
+    });
+
+    return { total: total, reviewed: reviewed, mastered: mastered, weak: weak };
+}
+
+// ========== Render ==========
+function renderExamStats() {
+    var s = getExamStats();
+    var grid = document.getElementById('examStats');
+    var cells = grid.querySelectorAll('.stat-cell');
+    cells[0].querySelector('.val').textContent = s.done;
+    cells[1].querySelector('.val').textContent = s.done > 0 ? s.accuracy + '%' : '-';
+    cells[1].querySelector('.val').className = 'val' + (s.accuracy >= 70 ? ' good' : s.accuracy >= 40 ? ' warn' : '');
+    cells[2].querySelector('.val').textContent = s.wrong;
+    cells[2].querySelector('.val').className = 'val' + (s.wrong > 0 ? ' bad' : '');
+    cells[3].querySelector('.val').textContent = s.fav;
+
+    var pct = s.total > 0 ? Math.round(s.done / s.total * 100) : 0;
+    document.getElementById('examProgressBar').style.width = pct + '%';
+    document.getElementById('examProgressLabel').textContent = s.done + ' / ' + s.total + ' (' + pct + '%)';
+
+    // Card status
+    var statusEl = document.getElementById('examCardStatus');
+    if (s.done > 0) {
+        var lastDone = '';
+        var answers = safeGet('marx_quiz_answers') || {};
+        var timestamps = Object.values(answers).map(function(a) { return a && a.timestamp ? a.timestamp : 0; }).filter(Boolean);
+        if (timestamps.length > 0) {
+            var maxTs = Math.max.apply(null, timestamps);
+            var diffMin = Math.round((Date.now() - maxTs) / 60000);
+            if (diffMin < 60) lastDone = ' · ' + diffMin + ' 分钟前';
+            else if (diffMin < 1440) lastDone = ' · ' + Math.round(diffMin / 60) + ' 小时前';
+            else lastDone = ' · ' + Math.round(diffMin / 1440) + ' 天前';
+        }
+        statusEl.innerHTML = '✓ 已做 <b>' + s.done + '</b> 题，正确率 <b>' + s.accuracy + '%</b>' + lastDone;
+        if (s.wrong > 0) {
+            statusEl.innerHTML += ' <span class="card-badge warn">' + s.wrong + ' 错题待复习</span>';
+        }
+    } else {
+        statusEl.innerHTML = '开始你的第一次刷题 →';
+    }
+}
+
+function renderEssayStats() {
+    var s = getEssayStats();
+    var grid = document.getElementById('essayStats');
+    var cells = grid.querySelectorAll('.stat-cell');
+    cells[0].querySelector('.val').textContent = s.reviewed;
+    cells[1].querySelector('.val').textContent = s.mastered;
+    cells[1].querySelector('.val').className = 'val good';
+    cells[2].querySelector('.val').textContent = s.weak;
+    cells[2].querySelector('.val').className = 'val' + (s.weak > 0 ? ' bad' : '');
+    cells[3].querySelector('.val').textContent = s.total;
+
+    // Card status
+    var statusEl = document.getElementById('essayCardStatus');
+    if (s.reviewed > 0) {
+        statusEl.innerHTML = '✓ 已复习 <b>' + s.reviewed + '</b> 题，掌握 <b>' + s.mastered + '</b> 题';
+        if (s.weak > 0) {
+            statusEl.innerHTML += ' <span class="card-badge warn">' + s.weak + ' 题待加强</span>';
+        } else if (s.mastered === s.total) {
+            statusEl.innerHTML += ' <span class="card-badge good">全部掌握 🎉</span>';
+        }
+    } else {
+        statusEl.innerHTML = '开始背诵简答题考点 →';
+    }
+}
+
+function renderAll() {
+    renderExamStats();
+    renderEssayStats();
+}
+
+renderAll();
+</script>
 </body>
 </html>
